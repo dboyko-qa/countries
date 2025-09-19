@@ -1,6 +1,5 @@
 package com.dboiko.countries.controller;
 
-import com.dboiko.countries.data.CountryEntity;
 import com.dboiko.countries.domain.Country;
 import com.dboiko.countries.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
