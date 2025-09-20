@@ -8,4 +8,5 @@ public interface CountryService {
     List<Country> allCountries();
     Country add(Country country);
     Country updateByCode(String code, String name);
+    void deleteByCode(String code);
 }

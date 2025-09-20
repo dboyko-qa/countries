@@ -3,6 +3,8 @@ package com.dboiko.countries.service;
 import com.dboiko.countries.data.CountryEntity;
 import com.dboiko.countries.data.CountryRepository;
 import com.dboiko.countries.domain.Country;
+import com.dboiko.countries.ex.CountryAlreadyExistsException;
+import com.dboiko.countries.ex.CountryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -34,23 +36,36 @@ public class DbCountryService implements CountryService {
 
     @Override
     public Country add(Country country) {
-        CountryEntity countryEntity = new CountryEntity();
-        countryEntity.setCode(country.code());
-        countryEntity.setName(country.name());
+        if (!countryRepository.findByCodeIgnoreCase(country.code()).isPresent()) {
+            CountryEntity countryEntity = new CountryEntity();
+            countryEntity.setCode(country.code());
+            countryEntity.setName(country.name());
 
-        countryRepository.save(countryEntity);
+            countryRepository.save(countryEntity);
 
-        return new Country(countryEntity.getName(), countryEntity.getCode());
+            return new Country(countryEntity.getName(), countryEntity.getCode());
+
+        }
+        else {
+            throw new CountryAlreadyExistsException("Country with code %s already exists".formatted(country.code()));
+        }
     }
 
     @Override
     public Country updateByCode(String code, String name) {
         CountryEntity countryEntity = countryRepository.findByCodeIgnoreCase(code)
-                .orElseThrow(() -> new IllegalArgumentException("Country code not found"));
+                .orElseThrow(() -> new CountryNotFoundException("Country code not found."));
 
         countryEntity.setName(name);
         CountryEntity updated = countryRepository.save(countryEntity);
-        return new Country(updated.getName(), updated.getName());
+        return new Country(updated.getName(), updated.getCode());
+    }
+
+    @Override
+    public void deleteByCode(String code) {
+        CountryEntity countryEntity = countryRepository.findByCodeIgnoreCase(code)
+                        .orElseThrow(() -> new CountryNotFoundException("Country code not found."));
+        countryRepository.delete(countryEntity);
     }
 
 }

@@ -37,4 +37,10 @@ public class CountryController {
         return countryService.updateByCode(code, name);
     }
 
+    @DeleteMapping("/delete/{code}")
+    public void deleteByCode(@PathVariable String code) {
+        countryService.deleteByCode(code);
+    }
+
+
 }
