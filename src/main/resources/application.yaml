@@ -1,6 +1,9 @@
 spring:
   application:
     name: countries
+  graphql:
+    graphiql:
+      enabled: true
   datasource:
     url: 'jdbc:postgresql://localhost:5432/country'
     username: postgres
