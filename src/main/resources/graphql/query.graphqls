@@ -3,9 +3,9 @@ type Query {
 }
 
 type Mutation {
-    add(country:CountryInput!): Country!
-    updateByCode(code:String!, name:String!): Country!
-    deleteByCode(code:String!): Boolean!
+    add(country:CountryInput!): Country
+    updateByCode(code:String!, name:String!): Country
+    deleteByCode(code:String!): Boolean
 }
 
 type Country {

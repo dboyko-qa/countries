@@ -10,8 +10,8 @@ import com.dboiko.countries.ex.CountryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Component;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -68,20 +68,18 @@ public class DbCountryService implements CountryService {
 
     @Override
     public CountryGraphql addGraphql(CountryInputGraphql country) {
-        if (!countryRepository.findByCodeIgnoreCase(country.code()).isPresent()) {
-            CountryEntity countryEntity = new CountryEntity();
-            countryEntity.setCode(country.code());
-            countryEntity.setName(country.name());
-
-            countryRepository.save(countryEntity);
-
-            return new CountryGraphql(countryEntity.getId(),
-                    countryEntity.getName(), countryEntity.getCode());
-
-        }
-        else {
+        if (countryRepository.findByCodeIgnoreCase(country.code()).isPresent()) {
             throw new CountryAlreadyExistsException("Country with code %s already exists".formatted(country.code()));
         }
+
+        CountryEntity countryEntity = new CountryEntity();
+        countryEntity.setCode(country.code());
+        countryEntity.setName(country.name());
+
+        countryRepository.save(countryEntity);
+
+        return new CountryGraphql(countryEntity.getId(),
+                countryEntity.getName(), countryEntity.getCode());
     }
 
     @Override
