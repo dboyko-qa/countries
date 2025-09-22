@@ -36,19 +36,18 @@ public class DbCountryService implements CountryService {
 
     @Override
     public Country add(Country country) {
-        if (!countryRepository.findByCodeIgnoreCase(country.code()).isPresent()) {
-            CountryEntity countryEntity = new CountryEntity();
-            countryEntity.setCode(country.code());
-            countryEntity.setName(country.name());
-
-            countryRepository.save(countryEntity);
-
-            return new Country(countryEntity.getName(), countryEntity.getCode());
-
-        }
-        else {
+        if (countryRepository.findByCodeIgnoreCase(country.code()).isPresent()) {
             throw new CountryAlreadyExistsException("Country with code %s already exists".formatted(country.code()));
         }
+
+        CountryEntity countryEntity = new CountryEntity();
+        countryEntity.setCode(country.code());
+        countryEntity.setName(country.name());
+
+        countryRepository.save(countryEntity);
+
+        return new Country(countryEntity.getName(), countryEntity.getCode());
+
     }
 
     @Override
