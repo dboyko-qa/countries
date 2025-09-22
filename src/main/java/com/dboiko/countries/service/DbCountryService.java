@@ -9,7 +9,9 @@ import com.dboiko.countries.ex.CountryAlreadyExistsException;
 import com.dboiko.countries.ex.CountryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -38,18 +40,14 @@ public class DbCountryService implements CountryService {
     }
 
     @Override
-    public List<CountryGraphql> allCountriesGraphql() {
-        List<CountryGraphql> result  = countryRepository.findAll()
-                .stream()
+    public Page<CountryGraphql> allCountriesGraphql(Pageable pageable) {
+        return countryRepository.findAll(pageable)
                 .map(el ->
                         new CountryGraphql(
                                 el.getId(),
                                 el.getName(),
                                 el.getCode()
-                        ))
-                .toList();
-        System.out.println(result);
-        return result;
+                        ));
     }
 
     @Override
