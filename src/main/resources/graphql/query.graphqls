@@ -1,0 +1,20 @@
+type Query {
+    countries(page:Int, size:Int): CountryConnection
+}
+
+type Mutation {
+    add(country:CountryInput!): Country
+    updateByCode(code:String!, name:String!): Country
+    deleteByCode(code:String!): Boolean
+}
+
+type Country {
+    id: ID!,
+    name: String!,
+    code: String!
+}
+
+input CountryInput {
+    name: String!,
+    code: String!
+}

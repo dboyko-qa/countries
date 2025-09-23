@@ -4,7 +4,7 @@ public class CountryAlreadyExistsException extends RuntimeException {
     public CountryAlreadyExistsException() {
     }
 
-    public CountryAlreadyExistsException(String message) {
-        super(message);
+    public CountryAlreadyExistsException(String code) {
+        super("Country with code %s already exists".formatted(code));
     }
 }

@@ -34,16 +34,16 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CountryAlreadyExistsException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiError> handleCountryAlreadyExistsException(CountryAlreadyExistsException ex, HttpServletRequest request) {
         LOG.error("Country exists: {}. Request URI: {}", ex.getMessage(), request.getRequestURI(), ex);
         return new ResponseEntity<>(new ApiError(
                 apiVersion,
-                HttpStatus.CONFLICT.toString(),
+                HttpStatus.BAD_REQUEST.toString(),
                 "Country already exists",
                 request.getRequestURI(),
                 ex.getMessage()),
-                HttpStatus.CONFLICT
+                HttpStatus.BAD_REQUEST
         );
     }
 
