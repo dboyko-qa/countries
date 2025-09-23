@@ -4,7 +4,7 @@ public class CountryNotFoundException extends RuntimeException {
     public CountryNotFoundException() {
     }
 
-    public CountryNotFoundException(String message) {
-        super(message);
+    public CountryNotFoundException(String code) {
+        super("Country code %s not found.".formatted(code));
     }
 }

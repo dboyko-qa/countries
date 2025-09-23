@@ -26,7 +26,7 @@ public class GraphqlExceptionHandler {
     public GraphQLError handleCountryNotFoundException(CountryNotFoundException ex) {
         return GraphqlErrorBuilder.newError()
                 .message(ex.getMessage())
-                .errorType(ErrorType.BAD_REQUEST)
+                .errorType(ErrorType.NOT_FOUND)
                 .extensions(Map.of("errorCode", "COUNTRY_NOT_FOUND"))
                 .build();
     }

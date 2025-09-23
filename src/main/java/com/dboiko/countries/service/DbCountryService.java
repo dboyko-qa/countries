@@ -53,7 +53,7 @@ public class DbCountryService implements CountryService {
     @Override
     public Country add(Country country) {
         if (countryRepository.findByCodeIgnoreCase(country.code()).isPresent()) {
-            throw new CountryAlreadyExistsException("Country with code %s already exists".formatted(country.code()));
+            throw new CountryAlreadyExistsException(country.code());
         }
 
         CountryEntity countryEntity = new CountryEntity();
@@ -69,7 +69,7 @@ public class DbCountryService implements CountryService {
     @Override
     public CountryGraphql addGraphql(CountryInputGraphql country) {
         if (countryRepository.findByCodeIgnoreCase(country.code()).isPresent()) {
-            throw new CountryAlreadyExistsException("Country with code %s already exists".formatted(country.code()));
+            throw new CountryAlreadyExistsException(country.code());
         }
 
         CountryEntity countryEntity = new CountryEntity();
@@ -85,7 +85,7 @@ public class DbCountryService implements CountryService {
     @Override
     public Country updateByCode(String code, String name) {
         CountryEntity countryEntity = countryRepository.findByCodeIgnoreCase(code)
-                .orElseThrow(() -> new CountryNotFoundException("Country code not found."));
+                .orElseThrow(() -> new CountryNotFoundException(code));
 
         countryEntity.setName(name);
         CountryEntity updated = countryRepository.save(countryEntity);
@@ -95,7 +95,7 @@ public class DbCountryService implements CountryService {
     @Override
     public CountryGraphql updateByCodeGraphql(String code, String name) {
         CountryEntity countryEntity = countryRepository.findByCodeIgnoreCase(code)
-                .orElseThrow(() -> new CountryNotFoundException("Country code not found."));
+                .orElseThrow(() -> new CountryNotFoundException(code));
 
         countryEntity.setName(name);
         CountryEntity updated = countryRepository.save(countryEntity);
@@ -105,14 +105,14 @@ public class DbCountryService implements CountryService {
     @Override
     public void deleteByCode(String code) {
         CountryEntity countryEntity = countryRepository.findByCodeIgnoreCase(code)
-                        .orElseThrow(() -> new CountryNotFoundException("Country code not found."));
+                        .orElseThrow(() -> new CountryNotFoundException(code));
         countryRepository.delete(countryEntity);
     }
 
     @Override
     public Boolean deleteByCodeGraphql(String code) {
         CountryEntity countryEntity = countryRepository.findByCodeIgnoreCase(code)
-                        .orElseThrow(() -> new CountryNotFoundException("Country code not found."));
+                        .orElseThrow(() -> new CountryNotFoundException(code));
         if (countryEntity != null) {
             try {
                 countryRepository.delete(countryEntity);
