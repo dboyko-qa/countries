@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package com.dboiko.countries;
+
+option java_multiple_files = true;
+option java_package = "com.dboiko.countries";
+option java_outer_classname = "CountriesProto";
+
+import "google/protobuf/empty.proto";
+
+message CountryResponse {
+    string id = 1;
+    string code = 2;
+    string name = 3;
+}
+
+message CountryRequest {
+    string code = 1;
+    string name = 2;
+}
+
+message CountryCodeRequest {
+    string code = 1;
+}
+
+message AddCountriesSummary {
+    int32 total_added = 1;
+}
+
+service CountriesService {
+    rpc AllCountries(google.protobuf.Empty) returns (stream CountryResponse) {};
+    rpc AddCountry(CountryRequest) returns (CountryResponse) {};
+    rpc DeleteCountry(CountryCodeRequest) returns (google.protobuf.Empty);
+    rpc AddCountries(stream CountryRequest) returns (AddCountriesSummary) {};
+}
