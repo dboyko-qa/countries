@@ -14,7 +14,6 @@ import java.util.List;
 public class GrpcCountriesService extends CountriesServiceGrpc.CountriesServiceImplBase {
 
     private final CountryService countryService;
-    private int addedCountries = 0;
 
     public GrpcCountriesService(CountryService countryService) {
         this.countryService = countryService;
@@ -65,7 +64,9 @@ public class GrpcCountriesService extends CountriesServiceGrpc.CountriesServiceI
 
     @Override
     public StreamObserver<CountryRequest> addCountries(StreamObserver<AddCountriesSummary> responseObserver) {
+
         return new StreamObserver<CountryRequest>() {
+            int addedCountries = 0;
             @Override
             public void onNext(CountryRequest value) {
                 countryService.add(new Country(value.getName(), value.getCode()));
